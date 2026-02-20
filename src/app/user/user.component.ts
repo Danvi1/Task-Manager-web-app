@@ -1,4 +1,16 @@
-import { Component, computed, EventEmitter, Input, input, Output } from '@angular/core';
+import { Component, computed, EventEmitter, Input, input, Output, output } from '@angular/core';
+
+// type User = {
+//     id: string;
+//     name: string;
+//     avatar: string;
+// };
+
+interface User {
+    id: string;
+    name: string;
+    avatar: string
+}
 
 @Component({
   selector: 'app-user',
@@ -7,17 +19,25 @@ import { Component, computed, EventEmitter, Input, input, Output } from '@angula
   styleUrl: './user.component.css',
 })
 export class UserComponent {
+    // //  below commented code are use of signals
+    // avatar = input.required<string>();
+    // name = input.required<string>();
+    // id = input.required<string>();
+    // // select = output<string>();
     // @Input({ required: true }) avatar!: string;
     // @Input({ required: true }) name!: string;
-    avatar = input.required<string>();
-    name = input.required<string>();
-    id = input.required<string>();
-    @Output() select = new EventEmitter();
+    // @Input({ required: true }) id!: string;
 
-    imagePath = computed(() => 'assets/users/' + this.avatar());
+    // making all the user input to object
+    @Input({ required: true }) user!: User;
+    @Output() select = new EventEmitter<string>();
+
+    get imagePath(){
+        return 'assets/users/' + this.user.avatar;
+    }
 
     onSelectUser(){
         console.log("clicked");
-        this.select.emit(this.id());
+        this.select.emit(this.user.id);
     }
 }
