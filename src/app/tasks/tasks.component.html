@@ -2,15 +2,15 @@
     <header>      
         <h2>{{ name }}'s Task</h2>
         <menu>
-            <button>Add Task</button>
+            <button (click)="addTask()">Add Task</button>
         </menu>
     </header>
 
     <ul>
-        @for (task of userTasks; track task) {
-                <li>
-                    <app-task [task]="task" />
-                </li>
+        @for (task of selectedUserTasks; track task) {
+            <li>
+                <app-task [task]="task" (complete)="onCompleteTask($event)" />
+            </li>
         }
     </ul>
 </section>
