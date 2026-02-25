@@ -11,15 +11,9 @@
     </ul>
 
     @if(selectedUser) {
-        <app-tasks [name]="selectedUser.name" [id]="selectedUser.id" (addNewTask)="newTask()" />
+        <app-tasks [name]="selectedUser.name" [userId]="selectedUser.id" />
     }
     @else {
         <p id="fallback">Select a user to see their task</p>
-    }
-
-    @if(addTaskEnabled) {
-        <h1>
-            Adding Dummy New Task
-        </h1>
     }
 </main>
