@@ -1,7 +1,8 @@
-import { Component, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { type NewTaskData } from '../task/task.model';
+import { TasksService } from '../tasks.service';
 
 @Component({
   selector: 'app-new-task',
@@ -11,9 +12,8 @@ import { type NewTaskData } from '../task/task.model';
 })
 export class NewTaskComponent {
 
-    @Output() cancel = new EventEmitter();
-    @Output() add = new EventEmitter<NewTaskData>();
-
+    @Input({ required: true}) userId!: string;
+    @Output() close = new EventEmitter();
     // Using Signals for 2way binding
     // enteredTitle = signal('');
     // enteredSummary = signal('')
@@ -21,16 +21,21 @@ export class NewTaskComponent {
     enteredTitle = '';
     enteredSummary = '';
     enteredDate = '';
+    
+    private tasksService = inject(TasksService);
 
     onCancel(){
-        this.cancel.emit();
+        this.close.emit();
     }
     
     onSubmit() {
-        this.add.emit({
+        this.tasksService.addTask({
             title: this.enteredTitle,
-            summary: this.enteredSummary,
+            summary: this.enteredTitle,
             date: this.enteredDate
-        });
+        }, 
+        this.userId);
+        this.close.emit();
     }
+    
 }
